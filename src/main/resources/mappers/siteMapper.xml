@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="siteMapper">
+
+
+    <select id="getTotalMtrInfo" parameterType="String" resultType="map">
+        select dtdttm, dtDayStart, dtDayEnd, COUNT(aa.nSeqSite) AS cntSite
+        <if test="mtrCat != null">
+            <if test="mtrCat != null and !mtrCat.isEmpty() and mtrCat.contains('lp')">
+                , @total_MeterCnt:=sum(targetDayCnt) * 96 fullDetect
+                , @nLpDetectHo:=sum(aa.nLpDetectHo) totalCnt
+                , round((sum(aa.nLpDetectHo) / (sum(targetDayCnt) * 96)) * 100, 1) totalRate
+            </if>
+            <if test="mtrCat != null and !mtrCat.isEmpty() and mtrCat.contains('day')">
+                , @total_MeterCnt:=sum(targetDayCnt) fullDetect
+                , @nDayDetectHo:=sum(aa.nDayDetectHo) totalCnt
+                , round((sum(aa.nDayDetectHo) / sum(targetDayCnt)) * 100, 1) totalRate
+            </if>
+            <if test="mtrCat != null and !mtrCat.isEmpty() and mtrCat.contains('reg')">
+                , @total_MeterCnt:=sum(targetDayCnt) fullDetect
+                , @nRegDetectHo:=sum(aa.nRegDetectHo) totalCnt
+                , round((sum(aa.nRegDetectHo) / sum(targetDayCnt)) * 100, 1) totalRate
+            </if>
+        </if>
+        from (
+        select 'org' gg, dtDttm, history.dtDayStart, history.dtDayEnd, nSeqSite, history.nLpDetectHo,
+        history.nRegDetectHo,
+        history.nDayDetectHo, history.targetDayCnt
+        from sitedatalp_status_history2 history
+        where dtDttm between date_format(date_sub(#{targetDate}, interval 6 day),'%Y%m%d') and #{targetDate}
+        and nSeqCodeAptDong =12 and nSeqCodeLpType =25
+        group by dtDttm, nSeqSite
+        ) aa
+        join site
+        on aa.nSeqSite=site.nSeqSite
+        where case
+        when gg='org' and nYear=2021 then 3
+        when gg='org' and nYear=2022 then 4
+        when gg='org' and nYear not in (2021, 2022) then 0
+        else 6
+        end in (
+        <if test="srvCtr.contains('org')">
+            <foreach item="item" collection="yearCat" open="" close="" separator=",">
+                <if test="item == 'all'">
+                    0, 3, 4
+                </if>
+                <if test="item == '2021'">
+                    3
+                </if>
+                <if test="item == '2022'">
+                    4
+                </if>
+                <if test="item == 'noLs'">
+                    0
+                </if>
+            </foreach>
+        </if>
+        )
+        and site.nSeqSite in(
+        select nSeqSite from dcu where dcu.nDcuType in(
+        <choose>
+            <when test="dcuCat.contains('all')">
+                0, 1, 2, 3
+            </when>
+            <when test="dcuCat.contains('js') and dcuCat.contains('holly')">
+                0, 1, 2, 3
+            </when>
+            <when test="dcuCat.contains('js')">
+                0, 1, 2
+            </when>
+            <when test="dcuCat.contains('holly')">
+                3
+            </when>
+        </choose>
+        ))
+        and site.bSysInstall = 1
+        group by dtdttm;
+    </select>
+
+
+</mapper>
+
