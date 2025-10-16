@@ -9,6 +9,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "dashboard/dashboard";
+//        return "dashboard/dashboard";
+        return "dashboard/main";
     }
 }

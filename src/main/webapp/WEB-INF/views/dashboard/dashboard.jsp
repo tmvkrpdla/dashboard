@@ -13,9 +13,15 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <jsp:include page="../common/common.jsp"/>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js Data Labels 플러그인 -->
+    <!-- Chart.js Data Labels 2.2.0 → 4.x 호환 -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 
-    <link href="${pageContext.request.contextPath}/main/webapp/static/css/setting.css" rel="stylesheet"/>
-    <script src="${pageContext.request.contextPath}/main/webapp/static/js/dashboard/dashboard.js"></script>
+    <link href="${pageContext.request.contextPath}/static/css/dashboard.css" rel="stylesheet"/>
+    <script src="${pageContext.request.contextPath}/static/js/dashboard/dashboard.js"></script>
+
 
     <title>사무실 대시보드</title>
 
@@ -26,58 +32,73 @@
     <div class="main-panel">
         <div class="content">
 
+
             <div class="line-first-container">
+                <div class="div-background">
 
+                    <div class="div-padding">
 
-                <div class="date-target-container">
-                    <span>어제 날짜 YYYY-MM-DD (요일) </span>
-                    <span>종합 검침률 현황</span>
+                        <div class="date-target-container">
+                            <span id="dateTarget"></span>
+                            <span class="div-title">종합 검침률 현황</span>
 
-                </div>
+                        </div>
 
-
-                <div id="charts-container">
-                    <%--LP 검침률 차트--%>
-                    <div style="width: 31%;" class="chart5">
-                        <canvas id="doughnut-chart5"
-                                style="height: 180px; width: 100%; display: unset;"></canvas>
-                    </div>
-
-                    <%--일간 검침률 차트--%>
-                    <div style="width: 31%;" class="chart6">
-                        <canvas id="doughnut-chart6"
-                                style="height: 180px; width: 100%; display: unset;"></canvas>
-                    </div>
-
-                    <%--정기 검침률 차트--%>
-                    <div style="width: 31%;" class="chart7">
-                        <canvas id="doughnut-chart7"
-                                style="height: 180px; width: 100%; display: unset;"></canvas>
+                        <div id="charts-container">
+                            <div class="chart-item">
+                                <canvas id="doughnut-chart5"></canvas>
+                            </div>
+                            <div class="chart-item">
+                                <canvas id="doughnut-chart6"></canvas>
+                            </div>
+                            <div class="chart-item">
+                                <canvas id="doughnut-chart7"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
 
             <div class="line-second-container">
 
-                <div class="flex-container" style="display: flex;">
 
-                    <div class="left-container">
+                <div class="flex-container" style="display: flex; gap: 30px;">
 
-                        <div class="div-title-container">
-                            <span>최근 14일</span>
-                            <span>LP 검침률 추이</span>
+                    <div class="left-container flex-div">
+
+                        <div class="div-background">
+
+                            <div class="div-padding">
+
+                                <div class="div-title-container">
+                                    <span class="div-title-highlight">최근 14일</span>
+                                    <span class="div-title">LP 검침률 추이</span>
+                                </div>
+
+                                <canvas id="chart-left"></canvas>
+
+                            </div>
                         </div>
-
                     </div>
 
+                    <div class="right-container flex-div">
+                        <div class="div-background">
 
-                    <div class="right-container">
-                        <div class="div-title-container">
-                            <span>최근 14일</span>
-                            <span>일간 검침률 추이</span>
+                            <div class="div-padding">
+
+                                <div class="div-title-container">
+                                    <span class="div-title-highlight">최근 14일</span>
+                                    <span class="div-title">일간 검침률 추이</span>
+                                </div>
+
+                                <canvas id="chart-right"></canvas>
+
+                            </div>
                         </div>
                     </div>
+
                 </div>
 
             </div>

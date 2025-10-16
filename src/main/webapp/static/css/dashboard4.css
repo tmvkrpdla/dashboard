@@ -1,0 +1,202 @@
+body {
+    margin: 0;
+}
+
+#wrapper {
+    background: black;
+    padding: 30px 40px;
+}
+
+.div-title {
+    color: #FFFFFF;
+    font-size: 22.5pt;
+    font-weight: 400;
+}
+
+.div-padding {
+    padding: 15px 25px;
+}
+
+.div-background {
+    background: #1C1C1C;
+    border-radius: 20px;
+}
+
+.usage-label {
+    font-size: 13.5pt;
+    color: white;
+}
+
+.usage-value {
+    color: #FFEB3B;
+    font-size: 52.5pt;
+    font-weight: 900;
+    float: right;
+}
+
+.card {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.unit {
+    font-size: 18px;
+    margin-left: 5px;
+}
+
+
+.usage-fee {
+    color: #FFEB3B;
+    font-size: 52.5pt;
+    font-weight: 900;
+    float: right;
+}
+
+
+.usage-subtext {
+    font-size: 16px;
+    color: #ccc;
+    margin-top: 8px;
+}
+
+
+.card-set {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.period-label {
+    font-size: 26px;
+    font-weight: 700;
+    margin-top: 12px;
+    color: #ffeb3b;
+}
+
+
+.blue .usage-value, .blue .usage-fee, .blue .period-label {
+    color: #00aaff;
+}
+
+
+.red .usage-value, .red .usage-fee, .red .period-label {
+    color: #ff3366;
+}
+
+
+.green .usage-value, .green .usage-fee, .green .period-label {
+    color: #9acd32;
+}
+
+.green .usage-fee {
+    font-size: 45pt !important;
+}
+
+.compare-text {
+    font-size: 15px;
+    color: #ccc;
+    margin-top: 10px;
+}
+
+
+.compare-text span.up {
+    color: red;
+}
+
+.compare-text span.down {
+    color: #00aaff;
+}
+
+.div-title-highlight {
+    color: #00A8FF;
+    font-size: 22.5pt;
+    font-weight: 400;
+    margin-right: 5px;
+}
+
+.flex-div {
+    flex: 1;
+}
+
+.line-second-container {
+    margin-top: 30px;
+}
+
+.date-target-container {
+    margin-bottom: 40px;
+}
+
+.button-container {
+    color: #FFEB3B;
+    font-size: 22.5pt;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    float: right;
+    gap: 20px;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.div-background-black {
+    background: black;
+}
+
+.card-value {
+    color: #FFFFFF;
+    font-size: 67.5pt;
+    font-weight: 900;
+}
+
+.card-ea {
+    color: #C8C8C8;
+    font-size: 22.5pt;
+    font-weight: 400;
+}
+
+.div-background-black.inline {
+    display: flex;
+    flex-direction: column;
+    padding: 35px 0;
+}
+
+.flex-container.card {
+    gap: 20px;
+}
+
+.flex-container.card > .flex-div {
+    text-align: center;
+}
+
+.card-title {
+    color: #FFFFFF;
+    font-size: 22.5pt;
+    font-weight: 400;
+}
+
+.card-title-container {
+    margin-top: 15px;
+}
+
+.card-title-highlight {
+    color: #00A8FF;
+    font-size: 22.5pt;
+    font-weight: 400;
+}
+
+.usage-box {
+    background: black;
+    border-radius: 15px;
+    margin: 20px;
+    width: 80%;
+    padding: 7px 20px;
+    height: -webkit-fill-available;
+
+}
+

@@ -1,0 +1,125 @@
+body {
+    margin: 0;
+    background: black;
+}
+
+#wrapper {
+    background: black;
+    padding: 30px 40px;
+}
+
+.div-title {
+    color: #FFFFFF;
+    font-size: 22.5pt;
+    font-weight: 400;
+}
+
+#dateTarget {
+    color: #00A8FF;
+    font-size: 22.5pt;
+    font-weight: 400;
+    margin-right: 5px;
+}
+
+
+/* ✅ 차트별 공통 스타일 */
+#charts-container {
+    display: flex;
+    justify-content: space-between; /* 또는 space-around, center 등 */
+    align-items: flex-start;
+    /*gap: 20px; !* 차트 간 간격 *!*/
+}
+
+.chart-item {
+    flex: 1;
+    height: 385px;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto
+}
+
+
+.div-padding {
+    padding: 15px 25px;
+}
+
+.div-background {
+    background: #1C1C1C;
+    border-radius: 20px;
+}
+
+.div-title-highlight {
+    color: #00A8FF;
+    font-size: 22.5pt;
+    font-weight: 400;
+    margin-right: 5px;
+}
+
+.flex-div {
+    flex: 1;
+}
+
+.line-second-container {
+    margin-top: 30px;
+}
+
+.date-target-container {
+    margin-bottom: 20px;
+}
+
+.button-container {
+    color: #FFEB3B;
+    font-size: 22.5pt;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    float: right;
+    gap: 20px;
+}
+
+#nextPage,
+#prevPage {
+    cursor: pointer;
+}
+
+/*페이지 슬라이드*/
+.page {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/*.slide-left {*/
+/*    animation: slideLeft 0.5s forwards;*/
+/*}*/
+
+/*.slide-in-right {*/
+/*    animation: slideInRight 0.5s forwards;*/
+/*}*/
+
+/*@keyframes slideLeft {*/
+/*    from {*/
+/*        left: 0;*/
+/*    }*/
+/*    to {*/
+/*        left: -100%;*/
+/*    }*/
+/*}*/
+
+/*@keyframes slideInRight {*/
+/*    from {*/
+/*        left: 100%;*/
+/*    }*/
+/*    to {*/
+/*        left: 0;*/
+/*    }*/
+/*}*/
+
+/*페이지 슬라이드*/
