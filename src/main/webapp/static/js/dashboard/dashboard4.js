@@ -1,7 +1,7 @@
 $(function () {
 
 
-    const ctx = document.getElementById('energyChart').getContext('2d');
+    const ctx = document.getElementById('energyChart4').getContext('2d');
 
     const hours = [
         '00', '01', '02', '03', '04', '05', '06', '07', '08', '09',

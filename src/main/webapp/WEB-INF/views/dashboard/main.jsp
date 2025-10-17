@@ -38,8 +38,9 @@
 
 
     <script>
-        $(document).ready(function() {
-            const pages = [$('#page1'), $('#page2'), $('#page3'), $('#page4')];
+        $(document).ready(function () {
+            // const pages = [$('#page1'), $('#page2'), $('#page3'), $('#page4')];
+            const pages = [$('#page1'), $('#page2'), $('#page4')];
             let current = 0;
 
             // 초기 위치 세팅
@@ -54,10 +55,10 @@
                 pages[current].animate({ left: '-100%' }, 500);
 
                 // 다음 페이지 화면으로 들어오기
-                pages[next].css('left', '100%').animate({ left: '0' }, 500);
+                pages[next].css('left', '100%').animate({ left: '0' }, 1000);
 
                 current = next;
-            }, 5000); // 3초마다 자동 슬라이드
+            }, 4500); // 4.5초마다 자동 슬라이드
         });
     </script>
 
@@ -65,12 +66,11 @@
 </head>
 <body>
 
-<div id="wrapper">
     <div id="page-container">
         <!-- 첫 번째 페이지 -->
         <div class="page" id="page1" style="left:0; background:#333; color:white;">
-            <h2>첫 번째 페이지</h2>
             <%@ include file="dashboard.jsp" %>
+            <%--                <iframe style="width: 100%; height: 100%;" src="${pageContext.request.contextPath}/dashboard/dashboard"></iframe>--%>
         </div>
 
         <!-- 두 번째 페이지 -->
@@ -79,15 +79,14 @@
         </div>
 
         <!-- 세 번째 페이지 -->
-        <div class="page" id="page3" style="left:100%; background:#555; color:white;">
-            <%@ include file="dashboard3.jsp" %>
-        </div>
+<%--        <div class="page" id="page3" style="left:100%; background:#555; color:white;">--%>
+<%--            <%@ include file="dashboard3.jsp" %>--%>
+<%--        </div>--%>
         <!-- 네 번째 페이지 -->
         <div class="page" id="page4" style="left:100%; background:#555; color:white;">
             <%@ include file="dashboard4.jsp" %>
         </div>
 
     </div>
-</div>
 </body>
 </html>

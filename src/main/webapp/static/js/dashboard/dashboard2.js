@@ -1,5 +1,47 @@
+function getCurrentQuarterTime() {
+    const now = new Date();
+
+    const yyyyMMdd = now.getFullYear().toString().padStart(4, '0')
+        + (now.getMonth() + 1).toString().padStart(2, '0')
+        + now.getDate().toString().padStart(2, '0');
+
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+
+    // 현재 분을 15분 단위로 내림
+    const quarter = Math.floor(minute / 15) * 15;
+
+    return yyyyMMdd
+        + hour.toString().padStart(2, '0')
+        + quarter.toString().padStart(2, '0'); // 예: "202510171030"
+}
+
+
 $(function () {
 
+
+    function getTotalUsageFifteenMinute() {
+
+        const dtDttmHI = getCurrentQuarterTime();
+
+
+        $.ajax({
+            url: '../dashboard/api/getTotalUsageFifteenMinute',
+            method: 'GET',
+            data: {
+                dtDttmHI: dtDttmHI
+            },
+            success: function (res) {
+                console.log("-----> getTotalUsageFifteen time :", dtDttmHI);
+                console.log("<-----", res);
+                $('#totalUsageFifteenMinute').text(res)
+            },
+            error: function () {
+                // alert("데이터 조회 실패");
+            }
+        });
+    }
+    getTotalUsageFifteenMinute();
 
     const ctx = document.getElementById('energyChart').getContext('2d');
 

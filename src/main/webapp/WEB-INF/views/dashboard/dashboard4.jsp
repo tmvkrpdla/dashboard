@@ -31,7 +31,7 @@
     <div class="main-panel">
         <div class="content">
 
-            <div class="line-first-container">
+            <div class="line-first-container-4">
 
                 <div class="div-background">
                     <div class="div-padding">
@@ -120,7 +120,7 @@
                         </div>
 
                         <div>
-                            <canvas id="energyChart" height="330"></canvas>
+                            <canvas id="energyChart4" height="350"></canvas>
                         </div>
 
                     </div>

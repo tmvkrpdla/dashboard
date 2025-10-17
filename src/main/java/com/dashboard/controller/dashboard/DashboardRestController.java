@@ -1,5 +1,6 @@
 package com.dashboard.controller.dashboard;
 
+import com.dashboard.DataLpService;
 import com.dashboard.util.StringUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -23,6 +25,17 @@ public class DashboardRestController {
 
     private final SqlSessionTemplate sessionTemplate;
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final DataLpService dataLpService;
+
+
+    @GetMapping("/api/getTotalUsageFifteenMinute")
+    public ResponseEntity<Long> getTotalUsageFifteenMinute(
+            @RequestParam long dtDttmHI) {
+
+        Long totalUsage = dataLpService.getTotalUsageFifteenMinute(dtDttmHI);
+        return ResponseEntity.ok(totalUsage != null ? totalUsage : 0L);
+    }
+
 
     @PostMapping(value = "/totalMtr_ajax")
     public @ResponseBody Object getTotalMtrInfo(@RequestBody String selectedValuesParam) throws JsonProcessingException {
@@ -43,12 +56,7 @@ public class DashboardRestController {
                 // targetDateList가 비어 있지 않다면 첫 번째 값을 사용 (필요에 따라 조정 가능)
                 if (!targetDateList.isEmpty()) {
                     targetDate = targetDateList.get(0).toString();
-//                    log.info("targetDate: {}", targetDate);
-                } else {
-//                    log.info("targetDate 리스트가 비어 있습니다.");
                 }
-            } else {
-//                log.info("targetDate가 List 형식이 아닙니다.");
             }
         }
 

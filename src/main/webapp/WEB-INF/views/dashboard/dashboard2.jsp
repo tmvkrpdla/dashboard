@@ -50,7 +50,7 @@
 
                                 <div class="flex-div">
                                     <div class="div-background-black inline">
-                                        <span class="card-value">8,837</span>
+                                        <span class="card-value" id="totalUsageFifteenMinute"></span>
                                         <span class="card-ea">kWh</span>
                                     </div>
                                     <div class="card-title-container">
@@ -130,7 +130,7 @@
                         </div>
 
                         <div>
-                            <canvas id="energyChart" height="330"></canvas>
+                            <canvas id="energyChart" height="380"></canvas>
                         </div>
 
                     </div>
