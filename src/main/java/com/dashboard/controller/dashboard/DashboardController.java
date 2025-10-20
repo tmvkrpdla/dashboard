@@ -21,7 +21,7 @@ public class DashboardController {
         return mav;
     }
 
-    @RequestMapping(value = "/dashboard2")
+    @RequestMapping(value = "dashboard2")
     public ModelAndView dashboard2(ModelAndView mav) {
 
         mav.setViewName("dashboard/dashboard2");

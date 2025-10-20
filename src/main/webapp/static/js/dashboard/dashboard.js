@@ -92,7 +92,6 @@ $(function () {
 
 
         let url = `${API_URL}/ami/metering/statistics?startDate=${startDate}&endDate=${endDate}&busiType=&activeNonMeteringSite=false&page=1&pageSize=15&seqCodeAptDong=12&type=APT`;
-
         console.log("twoWeeks url : ", url);
 
         $.ajax({
@@ -103,7 +102,6 @@ $(function () {
             success: function (response) {
                 console.log("response : ", response);
 
-
                 // ✅ 날짜 오름차순 정렬
                 const sorted = response.sort((a, b) => {
                     const dateA = a.date ? parseInt(a.date.replace(/-/g, '')) : 0;
@@ -112,9 +110,12 @@ $(function () {
                 });
 
 
+
                 // ✅ LP / Day / 날짜 데이터 추출
-                const lpData = sorted.map(d => d.lpCorrectionInspectionRate || 0);
-                const dayData = sorted.map(d => d.dayDetectReviHoRate || 0);
+                // const lpData = sorted.map(d => d.lpCorrectionInspectionRate || 0);
+                // const dayData = sorted.map(d => d.dayDetectReviHoRate || 0);
+                const lpData = sorted.map(d => (d.lpCorrectionInspectionRate || 0).toFixed(1));
+                const dayData = sorted.map(d => (d.dayDetectReviHoRate || 0).toFixed(1));
                 const dateLabels = sorted.map(d => formatShortDate(d.date));
 
                 drawRecent14Chart(dateLabels, lpData, dayData);
@@ -269,88 +270,6 @@ $(function () {
             plugins: [ChartDataLabels]
         });
     }
-
-
-    /*  //최근 14일
-      // 샘플 데이터
-      const rawData = [
-          {date: '10/3', value: 93.9},
-          {date: '10/4', value: 78.0},
-          {date: '10/5', value: 97.3},
-          {date: '10/6', value: 98.2},
-          {date: '10/7', value: 98.3},
-          {date: '10/8', value: 91.6},
-          {date: '10/9', value: 98.1},
-          {date: '10/10', value: 98.3},
-          {date: '10/11', value: 98.3},
-          {date: '10/12', value: 98.9},
-          {date: '10/13', value: 98.9},
-          {date: '10/14', value: 97.1},
-          {date: '10/15', value: 98.8},
-          {date: '10/16', value: 99.2} // 오늘 데이터라고 가정
-      ];
-
-      // 오늘 날짜 기준으로 최근 14일
-      const recent14Data = rawData.filter(d => {
-          const [month, day] = d.date.split('/').map(Number);
-          const dDate = new Date(today.getFullYear(), month - 1, day);
-          return dDate < today; // 오늘 데이터 제외
-      }).slice(-14); // 최근 14일
-
-      const labels = recent14Data.map(d => d.date);
-      const values = recent14Data.map(d => d.value);
-
-      // y축 min/max 동적 계산
-      const minValue = Math.floor(Math.min(...values) / 2) * 2; // 2 단위 반올림
-      const maxValue = Math.ceil(Math.max(...values) / 2) * 2;
-
-      const commonOptions = {
-          scales: {
-              y: {
-                  // min: 90,
-                  min: minValue, // 최소값 동적
-                  max: 100, // 최대값 고정
-                  ticks: {stepSize: 2},
-                  grid: {
-                      borderDash: [5, 5],  // 가로 점선
-                      color: '#606060',       // 점선 색상
-                      drawTicks: false
-                  }
-              },
-              x: {
-                  grid: {
-                      drawTicks: false,
-                      drawOnChartArea: false // x축 가로선 제거
-                  }
-              }
-          },
-          plugins: {
-              legend: {display: false},
-              tooltip: {enabled: true},
-              datalabels: { // 차트 상단 값 표시
-                  anchor: 'end',
-                  align: 'end',
-                  color: '#fff',
-                  font: {weight: '600', size: 12}
-              }
-          }
-      };
-
-
-      new Chart(document.getElementById('chart-left'), {
-          type: 'bar',
-          data: {labels, datasets: [{data: values, backgroundColor: '#FFD700'}]},
-          options: commonOptions,
-          plugins: [ChartDataLabels]
-      });
-
-      new Chart(document.getElementById('chart-right'), {
-          type: 'bar',
-          data: {labels, datasets: [{data: values, backgroundColor: '#00A1FF'}]},
-          options: commonOptions,
-          plugins: [ChartDataLabels]
-      });
-      //최근 14일*/
 
 
     getTopCardData();

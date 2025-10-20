@@ -22,8 +22,11 @@
     <link href="${pageContext.request.contextPath}/static/css/dashboard.css" rel="stylesheet"/>
     <script src="${pageContext.request.contextPath}/static/js/dashboard/dashboard.js"></script>
 
-
     <title>사무실 대시보드</title>
+
+    <script>
+        let contextPath = "${pageContext.request.contextPath}";
+    </script>
 
 </head>
 <body>

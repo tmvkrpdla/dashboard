@@ -120,6 +120,13 @@
             <version>1.1.1</version>
         </dependency>
 
+        <!--clickHouse-->
+        <dependency>
+            <groupId>ru.yandex.clickhouse</groupId>
+            <artifactId>clickhouse-jdbc</artifactId>
+            <version>0.3.2</version> <!-- 안정된 최신 버전 확인 -->
+        </dependency>
+
     </dependencies>
 
 

@@ -24,6 +24,10 @@
 
     <title>사무실 대시보드</title>
 
+    <script>
+        let contextPath = "${pageContext.request.contextPath}";
+    </script>
+
 </head>
 <body>
 
@@ -61,7 +65,7 @@
 
                                 <div class="flex-div">
                                     <div class="div-background-black inline">
-                                        <span class="card-value">3,865</span>
+                                        <span class="card-value" id="carbonEmission"></span>
                                         <span class="card-ea">kg</span>
                                     </div>
                                     <div class="card-title-container">
@@ -89,7 +93,7 @@
 
                                 <div class="flex-div">
                                     <div class="div-background-black inline">
-                                        <span class="card-value">487,625</span>
+                                        <span class="card-value" id="hourTotalUsage"></span>
                                         <span class="card-ea">kWh</span>
                                     </div>
                                     <div class="card-title-container">
@@ -100,7 +104,7 @@
 
                                 <div class="flex-div">
                                     <div class="div-background-black inline">
-                                        <span class="card-value">221,888</span>
+                                        <span class="card-value" id="carbonEmissionHour"></span>
                                         <span class="card-ea">kg</span>
                                     </div>
                                     <div class="card-title-container">
@@ -108,17 +112,13 @@
                                                 class="card-title-highlight">탄소</span> 배출량</span>
                                     </div>
                                 </div>
-
                             </div>
-
-
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="line-second-container">
-
 
                 <div class="div-background">
 

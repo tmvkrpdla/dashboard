@@ -1,4 +1,4 @@
-package com.dashboard.dao;
+package com.dashboard.dao.mariadb;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Param;
 public interface DataLpDAO {
 
     Long getTotalUsageFifteenMinute(@Param("dtDttmHI") long dtDttmHI);
+
 }

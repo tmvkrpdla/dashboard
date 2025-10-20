@@ -24,6 +24,10 @@
 
     <title>사무실 대시보드</title>
 
+    <script>
+        let contextPath = "${pageContext.request.contextPath}";
+    </script>
+
 </head>
 <body>
 

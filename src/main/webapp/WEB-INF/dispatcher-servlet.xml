@@ -15,7 +15,19 @@
 
 
     <!-- ✅ MyBatis Mapper 자동 스캔 -->
-    <mybatis-spring:scan base-package="com.dashboard.dao"/>
+    <!--    <mybatis-spring:scan base-package="com.dashboard.dao"/>-->
+
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.dashboard.dao.mariadb"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.dashboard.dao.clickhouse"/>
+        <property name="sqlSessionFactoryBeanName" value="clickhouseSqlSessionFactory"/>
+    </bean>
+
 
     <!-- ✅ 컴포넌트 스캔 -->
     <context:component-scan base-package="com.dashboard"/>
@@ -35,7 +47,8 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:/mybatis-config.xml"/>
-        <property name="mapperLocations" value="classpath:/mappers/*"/>
+        <!--        <property name="mapperLocations" value="classpath:/mappers/*"/>-->
+        <property name="mapperLocations" value="classpath:/mappers/*.xml"/>
     </bean>
 
     <!-- ✅ 트랜잭션 -->
@@ -44,10 +57,30 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
         <constructor-arg ref="sqlSessionFactory"/>
     </bean>
 
+
+    <!-- ✅ ClickHouse JDBC DataSource -->
+    <bean id="clickhouseDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="ru.yandex.clickhouse.ClickHouseDriver"/>
+        <property name="url" value="jdbc:clickhouse://3.39.6.238:8123/default"/>
+        <property name="username" value="default"/>
+        <property name="password" value="enernet1007"/>
+    </bean>
+
+    <!-- ClickHouse SqlSessionFactory -->
+    <bean id="clickhouseSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="clickhouseDataSource"/>
+        <property name="mapperLocations" value="classpath:/clickhouse-mappers/*.xml"/>
+    </bean>
+
+    <!-- ClickHouse SqlSessionTemplate -->
+    <bean id="clickhouseSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="clickhouseSqlSessionFactory"/>
+    </bean>
 
     <mvc:annotation-driven/>
 
@@ -55,7 +88,6 @@
         <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
-
 
     <mvc:resources mapping="/static/**" location="/static/"/>
 </beans>
