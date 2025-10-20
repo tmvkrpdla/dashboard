@@ -53,4 +53,11 @@ public class DashboardRestController {
     }
 
 
+    @GetMapping("/api/getUsageByRange")
+    public ResponseEntity<Long> getUsageByRange(@RequestParam String rangeType) {
+        Long usage = dataLpService.getUsageByRange(rangeType);
+        return ResponseEntity.ok(usage);
+    }
+
+
 }

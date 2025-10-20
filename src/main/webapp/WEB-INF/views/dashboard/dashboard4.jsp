@@ -47,7 +47,10 @@
                             <div class="card-set yellow">
                                 <div class="usage-box">
                                     <div class="usage-label">사용량</div>
-                                    <div class="usage-value">1,600<span class="unit">mWh</span></div>
+                                    <div>
+                                        <span class="usage-value" id="todayUsage"></span>
+                                        <span class="unit">MWh</span>
+                                    </div>
                                 </div>
                                 <div class="usage-box">
                                     <div class="usage-label">사용요금</div>
@@ -63,7 +66,8 @@
                             <div class="card-set blue">
                                 <div class="usage-box">
                                     <div class="usage-label">사용량</div>
-                                    <div class="usage-value">11,200<span class="unit">mWh</span></div>
+                                    <div><span class="usage-value" id="weekUsage"></span><span class="unit">MWh</span>
+                                    </div>
                                 </div>
                                 <div class="usage-box">
                                     <div class="usage-label">사용요금</div>
@@ -79,7 +83,9 @@
                             <div class="card-set red">
                                 <div class="usage-box">
                                     <div class="usage-label">사용량</div>
-                                    <div class="usage-value">44,800<span class="unit">mWh</span></div>
+                                    <div>
+                                        <span class="usage-value" id="monthUsage"></span>
+                                        <span class="unit">MWh</span></div>
                                 </div>
                                 <div class="usage-box">
                                     <div class="usage-label">사용요금</div>
@@ -95,7 +101,9 @@
                             <div class="card-set green">
                                 <div class="usage-box">
                                     <div class="usage-label">사용량</div>
-                                    <div class="usage-value">884,800<span class="unit">mWh</span></div>
+                                    <div>
+                                        <span class="usage-value" id="yearUsage"></span>
+                                        <span class="unit">MWh</span></div>
                                 </div>
                                 <div class="usage-box">
                                     <div class="usage-label">사용요금</div>
@@ -120,7 +128,7 @@
 
                         <div class="date-target-container">
                                 <span class="div-title"><span
-                                        class="div-title-highlight">오늘 시간대 별</span>총 에너지 사용량 (kWh)</span>
+                                        class="div-title-highlight">올 해</span>일간 총 에너지 사용량 (kWh)</span>
                         </div>
 
                         <div>

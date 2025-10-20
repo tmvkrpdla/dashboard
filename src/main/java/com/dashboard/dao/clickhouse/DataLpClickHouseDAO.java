@@ -15,4 +15,7 @@ public interface DataLpClickHouseDAO {
 
     List<Map<String, Object>> getHourlyUsage(@Param("today") String today);
 
+    Long getUsageByRange(@Param("startDate") String startDate,
+                         @Param("endDate") String endDate);
+
 }

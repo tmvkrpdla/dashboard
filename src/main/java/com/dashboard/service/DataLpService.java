@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -63,6 +64,44 @@ public class DataLpService {
 
     public List<Map<String, Object>> getHourlyUsage(String today) {
         return dataLpClickHouseDAO.getHourlyUsage(today);
+    }
+
+   /* public Long getUsageByRange(String rangeType) {
+        return dataLpClickHouseDAO.getUsageByRange(rangeType);
+    }*/
+
+
+    public Long getUsageByRange(String rangeType) {
+        LocalDate today = LocalDate.now();
+        String startDate = null;
+        String endDate = today.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+        switch (rangeType) {
+            case "today":
+                startDate = endDate;
+                break;
+
+            case "week":
+                // 이번 주 월요일 (ISO 기준: Monday=1)
+                LocalDate monday = today.with(java.time.DayOfWeek.MONDAY);
+                startDate = monday.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+                break;
+
+            case "month":
+                LocalDate firstDayOfMonth = today.withDayOfMonth(1);
+                startDate = firstDayOfMonth.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+                break;
+
+            case "year":
+                LocalDate firstDayOfYear = today.withDayOfYear(1);
+                startDate = firstDayOfYear.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+                break;
+        }
+
+
+        log.info("rangeType : {}, startDate : {},  endDate: {}", rangeType, startDate, endDate);
+
+        return dataLpClickHouseDAO.getUsageByRange(startDate, endDate);
     }
 
 

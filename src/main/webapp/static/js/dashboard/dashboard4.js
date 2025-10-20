@@ -1,3 +1,40 @@
+function formatUsage(value) {
+    if (value == null || isNaN(value)) return '-'; // 예외 처리
+    return Math.round(value / 1000).toLocaleString(); // mWh 변환 + 숫자 포맷
+}
+
+
+function loadUsageByRange(rangeType) {
+    $.ajax({
+        url: contextPath + '/dashboard/api/getUsageByRange',
+        type: 'GET',
+        data: {rangeType: rangeType},
+        success: function (usage) {
+            console.log(rangeType + ' 사용량:', usage.toLocaleString() + ' kWh');
+            const formatted = formatUsage(usage);
+
+            switch (rangeType) {
+                case 'today':
+                    $('#todayUsage').text(formatted);
+                    break;
+                case 'week':
+                    $('#weekUsage').text(formatted);
+                    break;
+                case 'month':
+                    $('#monthUsage').text(formatted);
+                    break;
+                case 'year':
+                    $('#yearUsage').text(formatted);
+                    break;
+            }
+        },
+        error: function () {
+            alert('데이터 조회 실패');
+        }
+    });
+}
+
+
 $(function () {
 
 
@@ -85,6 +122,12 @@ $(function () {
             }
         }]
     });
+
+
+    loadUsageByRange('today');
+    loadUsageByRange('week');
+    loadUsageByRange('month');
+    loadUsageByRange('year');
 
 
 });

@@ -53,15 +53,15 @@ function getCarbonEmission(kWh, unit = "kg") {
 
 
 function loadHourlyUsage() {
-    // const today = getTodayYMD();
-    const today = '20250724';
+    const today = getTodayYMD();
+    // const today = '20250724';
 
     $.ajax({
         url: contextPath + '/dashboard/api/getHourlyUsage',
         type: 'GET',
         data: {today: today},
         success: function (data) {
-            console.log('Usage Data:', data);
+            console.log('hourly Usage Data:', data);
             // dtDttmH에서 시간만 추출 (마지막 두 자리)
             const labels = data.map(row => {
                 const dtStr = row.dtDttmH.toString();
@@ -151,14 +151,14 @@ $(function () {
 
 
         $.ajax({
-            url: contextPath + '/dashboard/api/getTotalUsageForHour',  //
+            url: contextPath + '/dashboard/api/getTotalUsageFifteenMinute',  //
             method: 'GET',
             data: {
                 dtDttmHI: dtDttmHI
             },
             success: function (res) {
                 console.log("-----> getTotalUsageFifteen time :", dtDttmHI);
-                console.log("<-----", res);
+                console.log("<-----  (실시간 에너지 사용량) : ", res);
                 const co2 = getCarbonEmission(res, 'kg');
                 $('#totalUsageFifteenMinute').text(res)
                 $('#carbonEmission').text(co2);
@@ -176,7 +176,7 @@ $(function () {
             type: 'GET',
             dataType: 'json',
             success: function (response) {
-                console.log("✅ 최근 1시간 총 사용량:", response);
+                console.log("<----- 최근 1시간 총 사용량 :", response);
                 const co2 = getCarbonEmission(response, 'kg');
 
                 $('#hourTotalUsage').text(response);
