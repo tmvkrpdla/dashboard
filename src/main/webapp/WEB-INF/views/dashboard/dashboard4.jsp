@@ -56,8 +56,8 @@
                                     <div class="usage-label">사용요금</div>
                                     <div class="usage-fee">2,400<span class="unit">백만원</span></div>
                                 </div>
-                                <div class="compare-text">전주 대비 <span class="up">19% ▲</span> · 전월 대비 <span
-                                        class="down">7% ▼</span>
+                                <div class="compare-text">전주 대비 <span id="todayVsLastWeek"></span> · 전월 대비 <span
+                                        id="todayVsLastMonth"></span>
                                 </div>
                                 <div class="period-label">오늘</div>
                             </div>
@@ -73,8 +73,8 @@
                                     <div class="usage-label">사용요금</div>
                                     <div class="usage-fee">16,800<span class="unit">백만원</span></div>
                                 </div>
-                                <div class="compare-text">전주 대비 <span class="up">19% ▲</span> · 전월 대비 <span
-                                        class="down">7% ▼</span>
+                                <div class="compare-text">전주 대비 <span id="weekVsLastWeek"></span> · 전월 대비 <span
+                                        id="weekVsLastMonth"></span>
                                 </div>
                                 <div class="period-label">이번 주</div>
                             </div>
@@ -91,8 +91,8 @@
                                     <div class="usage-label">사용요금</div>
                                     <div class="usage-fee">2,400<span class="unit">백만원</span></div>
                                 </div>
-                                <div class="compare-text">전주 대비 <span class="up">19% ▲</span> · 전월 대비 <span
-                                        class="down">7% ▼</span>
+                                <div class="compare-text">전월 대비 <span id="monthVsLastMonth"></span> · 전년 동기 대비 <span
+                                        id="monthVsLastYear"></span>
                                 </div>
                                 <div class="period-label">이번 달</div>
                             </div>
@@ -109,9 +109,8 @@
                                     <div class="usage-label">사용요금</div>
                                     <div class="usage-fee">1,327,200<span class="unit">백만원</span></div>
                                 </div>
-                                <div class="compare-text">전주 대비 <span class="up">19% ▲</span> · 전월 대비 <span
-                                        class="down">7% ▼</span>
-                                </div>
+                                <div class="compare-text">전년 동기 대비 <span id="yearVsLastYear"></span></div>
+
                                 <div class="period-label">올 해</div>
                             </div>
                         </div>

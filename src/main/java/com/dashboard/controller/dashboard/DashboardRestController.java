@@ -1,13 +1,11 @@
 package com.dashboard.controller.dashboard;
 
+import com.dashboard.dto.UsageCompareResponse;
 import com.dashboard.service.DataLpService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -38,14 +36,11 @@ public class DashboardRestController {
 //    }
 
 
-
     @GetMapping("/api/getTotalUsageForHour")
     public ResponseEntity<Long> getTotalUsageForHour() throws Exception {
         Long totalUsage = dataLpService.getTotalUsageLastHourParallel();
         return ResponseEntity.ok(totalUsage);
     }
-
-
 
     @GetMapping("/api/getHourlyUsage")
     public List<Map<String, Object>> getHourlyUsage(@RequestParam("today") String today) {
@@ -54,10 +49,14 @@ public class DashboardRestController {
 
 
     @GetMapping("/api/getUsageByRange")
-    public ResponseEntity<Long> getUsageByRange(@RequestParam String rangeType) {
-        Long usage = dataLpService.getUsageByRange(rangeType);
-        return ResponseEntity.ok(usage);
+    public ResponseEntity<UsageCompareResponse> getUsageByRange(@RequestParam String rangeType) {
+        UsageCompareResponse response = dataLpService.getUsageCompare(rangeType);
+        return ResponseEntity.ok(response);
     }
 
-
+    @GetMapping("/api/getYearlyUsageByDay")
+    public ResponseEntity<List<Map<String, Object>>> getYearlyUsageByDay() {
+        List<Map<String, Object>> data = dataLpService.getYearlyUsageByDay();
+        return ResponseEntity.ok(data);
+    }
 }

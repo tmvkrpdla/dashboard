@@ -12,10 +12,11 @@ public interface DataLpClickHouseDAO {
     Long getTotalUsageFifteenMinute(@Param("startDateTarget") long startDateTarget,
                                     @Param("endDateTarget") long endDateTarget);
 
-
     List<Map<String, Object>> getHourlyUsage(@Param("today") String today);
 
     Long getUsageByRange(@Param("startDate") String startDate,
                          @Param("endDate") String endDate);
+
+    List<Map<String, Object>> getYearlyUsageByDay(@Param("thisYearStart") String thisYearStart);
 
 }

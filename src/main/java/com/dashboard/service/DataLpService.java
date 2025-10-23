@@ -2,17 +2,22 @@ package com.dashboard.service;
 
 import com.dashboard.dao.clickhouse.DataLpClickHouseDAO;
 import com.dashboard.dao.mariadb.DataLpDAO;
+import com.dashboard.dto.UsageCompareResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -102,6 +107,165 @@ public class DataLpService {
         log.info("rangeType : {}, startDate : {},  endDate: {}", rangeType, startDate, endDate);
 
         return dataLpClickHouseDAO.getUsageByRange(startDate, endDate);
+    }
+
+
+    public List<Map<String, Object>> getYearlyUsageByDay() {
+        LocalDate today = LocalDate.now();
+        LocalDate firstDayOfYear = today.withDayOfYear(1);
+        String thisYearStart = firstDayOfYear.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        // 예: 20250101
+
+        return dataLpClickHouseDAO.getYearlyUsageByDay(thisYearStart);
+    }
+
+
+   /* public UsageCompareResponse getUsageCompare(String rangeType) {
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+        // ✅ 현재 기간 구간 설정 (시작일 ~ 오늘)
+        LocalDate curStart = null;
+        LocalDate curEnd = today;
+
+        switch (rangeType) {
+            case "today":
+                curStart = today;
+                break;
+            case "week":
+                curStart = today.with(DayOfWeek.MONDAY);
+                break;
+            case "month":
+                curStart = today.withDayOfMonth(1);
+                break;
+            case "year":
+                curStart = today.withDayOfYear(1);
+                break;
+        }
+
+        // ✅ 현재 기간의 길이 계산 (며칠짜리 기간인지)
+        long days = ChronoUnit.DAYS.between(curStart, curEnd); // 예: 오늘이면 0일, 이번주면 6일
+
+        // ✅ 기준 기간과 동일한 길이로 '1주 전' 기간 계산
+        LocalDate prevWeekStart = curStart.minusWeeks(1);
+        LocalDate prevWeekEnd = prevWeekStart.plusDays(days);
+
+        // ✅ 기준 기간과 동일한 길이로 '1개월 전' 기간 계산
+        LocalDate prevMonthStart = curStart.minusMonths(1);
+        LocalDate prevMonthEnd = prevMonthStart.plusDays(days);
+
+
+        // ✅ DB 조회
+        Long curUsage = dataLpClickHouseDAO.getUsageByRange(curStart.format(df), curEnd.format(df));
+        Long prevWeekUsage = dataLpClickHouseDAO.getUsageByRange(prevWeekStart.format(df), prevWeekEnd.format(df));
+        Long prevMonthUsage = dataLpClickHouseDAO.getUsageByRange(prevMonthStart.format(df), prevMonthEnd.format(df));
+
+        // ✅ 증감률 계산 함수
+        Function<Long, Double> calcPercent = (prev) -> {
+            if (prev == null || prev == 0) return 0.0;
+            return ((double) (curUsage - prev) / prev) * 100;
+        };
+
+
+        log.info("rangeType : {}, curStart : {},  curEnd: {}", rangeType, curStart, curEnd);
+        log.info("rangeType : {}, prevWeekStart : {},  prevWeekEnd: {}", rangeType, prevWeekStart, prevWeekEnd);
+        log.info("rangeType : {}, prevMonthStart : {},  prevMonthEnd: {}", rangeType, prevMonthStart, prevMonthEnd);
+
+        // ✅ DTO 반환
+        return new UsageCompareResponse(
+                rangeType,
+                curUsage,
+                prevWeekUsage,
+                calcPercent.apply(prevWeekUsage),
+                prevMonthUsage,
+                calcPercent.apply(prevMonthUsage)
+        );
+    }*/
+
+    public UsageCompareResponse getUsageCompare(String rangeType) {
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+        LocalDate curStart = null;
+        LocalDate curEnd = today;
+
+        // ✅ 현재 구간 설정
+        switch (rangeType) {
+            case "today":
+                curStart = today;
+                break;
+            case "week":
+                curStart = today.with(DayOfWeek.MONDAY);
+                break;
+            case "month":
+                curStart = today.withDayOfMonth(1);
+                break;
+            case "year":
+                curStart = today.withDayOfYear(1);
+                break;
+        }
+
+        // ✅ 현재 사용량
+        Long curUsage = dataLpClickHouseDAO.getUsageByRange(curStart.format(df), curEnd.format(df));
+
+        Long prevWeekUsage = null;
+        Long prevMonthUsage = null;
+
+        // ✅ today, week → 기존 방식 유지 (전주 + 전월 비교)
+        if (rangeType.equals("today") || rangeType.equals("week")) {
+            long periodDays = ChronoUnit.DAYS.between(curStart, curEnd);
+
+            // 전주 같은 기간
+            LocalDate prevWeekStart = curStart.minusWeeks(1);
+            LocalDate prevWeekEnd = prevWeekStart.plusDays(periodDays);
+            prevWeekUsage = dataLpClickHouseDAO.getUsageByRange(prevWeekStart.format(df), prevWeekEnd.format(df));
+
+            // 전월 같은 기간
+            LocalDate prevMonthStart = curStart.minusMonths(1);
+            LocalDate prevMonthEnd = prevMonthStart.plusDays(periodDays);
+            prevMonthUsage = dataLpClickHouseDAO.getUsageByRange(prevMonthStart.format(df), prevMonthEnd.format(df));
+        }
+
+        // ✅ month → 전월 대비 + 전년 동기 대비
+        if (rangeType.equals("month")) {
+            // 전월: 지난달 1일 ~ 지난달 오늘 날짜
+            LocalDate lastMonthStart = curStart.minusMonths(1);
+            LocalDate lastMonthEnd = lastMonthStart.withDayOfMonth(today.getDayOfMonth());
+            prevMonthUsage = dataLpClickHouseDAO.getUsageByRange(lastMonthStart.format(df), lastMonthEnd.format(df));
+
+            // 전년 동기: 작년 이번달 1일 ~ 작년 오늘 날짜
+            LocalDate lastYearMonthStart = curStart.minusYears(1);
+            LocalDate lastYearMonthEnd = lastYearMonthStart.withDayOfMonth(today.getDayOfMonth());
+            prevWeekUsage = dataLpClickHouseDAO.getUsageByRange(lastYearMonthStart.format(df), lastYearMonthEnd.format(df));
+        }
+
+        // ✅ year → 전년 동기 대비만
+        if (rangeType.equals("year")) {
+            LocalDate lastYearStart = curStart.minusYears(1);
+            LocalDate lastYearEnd = curEnd.minusYears(1);
+            prevWeekUsage = dataLpClickHouseDAO.getUsageByRange(lastYearStart.format(df), lastYearEnd.format(df));
+        }
+
+        // ✅ 증감률 계산 함수
+        Function<Long, Double> calcPercent = (prev) -> {
+            if (prev == null || prev == 0) return null;
+            return ((double) (curUsage - prev) / prev) * 100;
+        };
+
+        Double prevWeekPercent = calcPercent.apply(prevWeekUsage);
+        Double prevMonthPercent = calcPercent.apply(prevMonthUsage);
+
+        log.info("rangeType : {}, curStart : {},  curEnd: {}, prevWeekPercent : {} , prevMonthPercent : {} ", rangeType, curStart, curEnd, prevWeekPercent, prevMonthPercent);
+
+        // ✅ 최종 반환
+        return new UsageCompareResponse(
+                rangeType,
+                curUsage,
+                prevWeekUsage,
+                prevWeekPercent,
+                prevMonthUsage,
+                prevMonthPercent
+        );
     }
 
 

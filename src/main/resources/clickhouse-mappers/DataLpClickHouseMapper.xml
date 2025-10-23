@@ -31,52 +31,6 @@
     </select>
 
 
-    <!--<select id="getUsageByRange" resultType="long">
-        SELECT
-        ROUND(SUM(
-        CASE
-        WHEN m.dValidInstrInteger IS NULL OR m.dValidInstrInteger = 0
-        OR dld.dFapDiff IS NULL OR dld.dFapDiff = 0
-        THEN 0
-        ELSE dld.dFapDiff / m.dValidInstrInteger
-        END
-        ), 0) AS usage
-        FROM
-        data_lp2_day2 dld
-        LEFT JOIN meter_tmp2 m ON dld.mid = m.mid
-        WHERE 1 = 1
-        <choose>
-            &lt;!&ndash; ✅ 오늘 &ndash;&gt;
-            <when test="rangeType == 'today'">
-                AND dld.dtDttm = DATE_FORMAT(NOW(), '%Y%m%d')
-            </when>
-
-            &lt;!&ndash; ✅ 이번주 (월요일 ~ 오늘) &ndash;&gt;
-            <when test="rangeType == 'week'">
-                AND dld.dtDttm BETWEEN DATE_FORMAT(DATE_SUB(NOW(), INTERVAL (DAYOFWEEK(NOW()) - 2) DAY), '%Y%m%d')
-                AND DATE_FORMAT(NOW(), '%Y%m%d')
-            </when>
-
-            &lt;!&ndash; ✅ 이번달 &ndash;&gt;
-            <when test="rangeType == 'month'">
-                AND dld.dtDttm BETWEEN DATE_FORMAT(NOW(), '%Y%m01')
-                AND DATE_FORMAT(NOW(), '%Y%m%d')
-            </when>
-
-            &lt;!&ndash; ✅ 올해 &ndash;&gt;
-            <when test="rangeType == 'year'">
-                AND dld.dtDttm BETWEEN DATE_FORMAT(NOW(), '%Y0101')
-                AND DATE_FORMAT(NOW(), '%Y%m%d')
-            </when>
-
-            &lt;!&ndash; ✅ 직접 시작일~종료일 검색 &ndash;&gt;
-            <when test="startDate != null and endDate != null">
-                AND dld.dtDttm BETWEEN #{startDate} AND #{endDate}
-            </when>
-        </choose>
-    </select>-->
-
-
     <select id="getUsageByRange" resultType="long">
         SELECT ROUND(SUM(
         CASE
@@ -92,6 +46,30 @@
         <if test="startDate != null and endDate != null">
             AND dld.dtDttm BETWEEN #{startDate} AND #{endDate}
         </if>
+    </select>
+
+
+    <select id="getYearlyUsageByDay" resultType="map">
+        SELECT
+        dld.dtDttm,
+        ROUND(SUM(
+        CASE
+        WHEN m.dValidInstrInteger IS NULL OR m.dValidInstrInteger = 0
+        OR dld.dFapDiff IS NULL OR dld.dFapDiff = 0
+        THEN 0
+        ELSE dld.dFapDiff / m.dValidInstrInteger
+        END
+        ), 0) AS usage
+        FROM
+        data_lp2_day2 dld
+        LEFT JOIN meter_tmp2 m
+        ON dld.mid = m.mid
+        WHERE 1 = 1
+        AND dld.dtDttm >= #{thisYearStart}   <!-- ✅ 올해 1월 1일 값 적용 -->
+        GROUP BY
+        dld.dtDttm
+        ORDER BY
+        dld.dtDttm ASC
     </select>
 
 
