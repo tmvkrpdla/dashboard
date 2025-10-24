@@ -45,33 +45,45 @@
                         <div class="card">
 
                             <div class="card-set yellow">
+
                                 <div class="usage-box">
                                     <div class="usage-label">사용량</div>
-                                    <div>
+                                    <div class="card-value-ea-container">
                                         <span class="usage-value" id="todayUsage"></span>
                                         <span class="unit">MWh</span>
                                     </div>
                                 </div>
+
                                 <div class="usage-box">
                                     <div class="usage-label">사용요금</div>
-                                    <div class="usage-fee">2,400<span class="unit">백만원</span></div>
+                                    <div class="card-value-ea-container">
+                                        <span class="usage-fee" id="todayUsageBill"></span>
+                                        <span class="unit">백만원</span>
+                                    </div>
                                 </div>
+
                                 <div class="compare-text">전주 대비 <span id="todayVsLastWeek"></span> · 전월 대비 <span
                                         id="todayVsLastMonth"></span>
                                 </div>
+
                                 <div class="period-label">오늘</div>
+
                             </div>
 
 
                             <div class="card-set blue">
                                 <div class="usage-box">
                                     <div class="usage-label">사용량</div>
-                                    <div><span class="usage-value" id="weekUsage"></span><span class="unit">MWh</span>
+                                    <div class="card-value-ea-container">
+                                        <span class="usage-value" id="weekUsage"></span><span class="unit">MWh</span>
                                     </div>
                                 </div>
                                 <div class="usage-box">
                                     <div class="usage-label">사용요금</div>
-                                    <div class="usage-fee">16,800<span class="unit">백만원</span></div>
+                                    <div class="card-value-ea-container">
+                                        <span class="usage-fee" id="weekUsageBill"></span>
+                                        <span class="unit">백만원</span>
+                                    </div>
                                 </div>
                                 <div class="compare-text">전주 대비 <span id="weekVsLastWeek"></span> · 전월 대비 <span
                                         id="weekVsLastMonth"></span>
@@ -83,13 +95,16 @@
                             <div class="card-set red">
                                 <div class="usage-box">
                                     <div class="usage-label">사용량</div>
-                                    <div>
+                                    <div class="card-value-ea-container">
                                         <span class="usage-value" id="monthUsage"></span>
                                         <span class="unit">MWh</span></div>
                                 </div>
                                 <div class="usage-box">
                                     <div class="usage-label">사용요금</div>
-                                    <div class="usage-fee">2,400<span class="unit">백만원</span></div>
+                                    <div class="card-value-ea-container">
+                                        <span class="usage-fee" id="monthUsageBill"></span>
+                                        <span class="unit">백만원</span>
+                                    </div>
                                 </div>
                                 <div class="compare-text">전월 대비 <span id="monthVsLastMonth"></span> · 전년 동기 대비 <span
                                         id="monthVsLastYear"></span>
@@ -101,13 +116,17 @@
                             <div class="card-set green">
                                 <div class="usage-box">
                                     <div class="usage-label">사용량</div>
-                                    <div>
+                                    <div class="card-value-ea-container">
                                         <span class="usage-value" id="yearUsage"></span>
-                                        <span class="unit">MWh</span></div>
+                                        <span class="unit">MWh</span>
+                                    </div>
                                 </div>
                                 <div class="usage-box">
                                     <div class="usage-label">사용요금</div>
-                                    <div class="usage-fee">1,327,200<span class="unit">백만원</span></div>
+                                    <div class="card-value-ea-container">
+                                        <span class="usage-fee" id="yearUsageBill"></span>
+                                        <span class="unit">백만원</span>
+                                    </div>
                                 </div>
                                 <div class="compare-text">전년 동기 대비 <span id="yearVsLastYear"></span></div>
 

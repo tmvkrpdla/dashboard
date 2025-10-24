@@ -46,7 +46,6 @@ body {
     margin-left: 5px;
 }
 
-
 .usage-fee {
     color: #FFEB3B;
     font-size: 52.5pt;
@@ -54,13 +53,11 @@ body {
     float: right;
 }
 
-
 .usage-subtext {
     font-size: 16px;
     color: #ccc;
     margin-top: 8px;
 }
-
 
 .card-set {
     flex: 1;
@@ -195,7 +192,7 @@ body {
     background: black;
     border-radius: 15px;
     margin: 20px;
-    width: 80%;
+    width: 85%;
     padding: 7px 20px;
     height: -webkit-fill-available;
 
@@ -204,5 +201,12 @@ body {
 .unit {
     color: #C0C0C0;
     font-size: 13.5pt;
+
     font-weight: 400;
+}
+
+.card-value-ea-container {
+    display: flex;
+    align-items: baseline;
+    float: right;
 }

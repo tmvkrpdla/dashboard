@@ -58,8 +58,8 @@ public class DataLpService {
             totalUsage += f.get();
         }
 
-        log.info("Queried time slots: {}", dtList);
-        log.info("Total usage for last hour: {}", totalUsage);
+//        log.info("Queried time slots: {}", dtList);
+//        log.info("Total usage for last hour: {}", totalUsage);
 
 
         executor.shutdown();
@@ -104,7 +104,7 @@ public class DataLpService {
         }
 
 
-        log.info("rangeType : {}, startDate : {},  endDate: {}", rangeType, startDate, endDate);
+//        log.info("rangeType : {}, startDate : {},  endDate: {}", rangeType, startDate, endDate);
 
         return dataLpClickHouseDAO.getUsageByRange(startDate, endDate);
     }
@@ -119,68 +119,6 @@ public class DataLpService {
         return dataLpClickHouseDAO.getYearlyUsageByDay(thisYearStart);
     }
 
-
-   /* public UsageCompareResponse getUsageCompare(String rangeType) {
-        LocalDate today = LocalDate.now();
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMdd");
-
-        // ✅ 현재 기간 구간 설정 (시작일 ~ 오늘)
-        LocalDate curStart = null;
-        LocalDate curEnd = today;
-
-        switch (rangeType) {
-            case "today":
-                curStart = today;
-                break;
-            case "week":
-                curStart = today.with(DayOfWeek.MONDAY);
-                break;
-            case "month":
-                curStart = today.withDayOfMonth(1);
-                break;
-            case "year":
-                curStart = today.withDayOfYear(1);
-                break;
-        }
-
-        // ✅ 현재 기간의 길이 계산 (며칠짜리 기간인지)
-        long days = ChronoUnit.DAYS.between(curStart, curEnd); // 예: 오늘이면 0일, 이번주면 6일
-
-        // ✅ 기준 기간과 동일한 길이로 '1주 전' 기간 계산
-        LocalDate prevWeekStart = curStart.minusWeeks(1);
-        LocalDate prevWeekEnd = prevWeekStart.plusDays(days);
-
-        // ✅ 기준 기간과 동일한 길이로 '1개월 전' 기간 계산
-        LocalDate prevMonthStart = curStart.minusMonths(1);
-        LocalDate prevMonthEnd = prevMonthStart.plusDays(days);
-
-
-        // ✅ DB 조회
-        Long curUsage = dataLpClickHouseDAO.getUsageByRange(curStart.format(df), curEnd.format(df));
-        Long prevWeekUsage = dataLpClickHouseDAO.getUsageByRange(prevWeekStart.format(df), prevWeekEnd.format(df));
-        Long prevMonthUsage = dataLpClickHouseDAO.getUsageByRange(prevMonthStart.format(df), prevMonthEnd.format(df));
-
-        // ✅ 증감률 계산 함수
-        Function<Long, Double> calcPercent = (prev) -> {
-            if (prev == null || prev == 0) return 0.0;
-            return ((double) (curUsage - prev) / prev) * 100;
-        };
-
-
-        log.info("rangeType : {}, curStart : {},  curEnd: {}", rangeType, curStart, curEnd);
-        log.info("rangeType : {}, prevWeekStart : {},  prevWeekEnd: {}", rangeType, prevWeekStart, prevWeekEnd);
-        log.info("rangeType : {}, prevMonthStart : {},  prevMonthEnd: {}", rangeType, prevMonthStart, prevMonthEnd);
-
-        // ✅ DTO 반환
-        return new UsageCompareResponse(
-                rangeType,
-                curUsage,
-                prevWeekUsage,
-                calcPercent.apply(prevWeekUsage),
-                prevMonthUsage,
-                calcPercent.apply(prevMonthUsage)
-        );
-    }*/
 
     public UsageCompareResponse getUsageCompare(String rangeType) {
         LocalDate today = LocalDate.now();
@@ -255,7 +193,7 @@ public class DataLpService {
         Double prevWeekPercent = calcPercent.apply(prevWeekUsage);
         Double prevMonthPercent = calcPercent.apply(prevMonthUsage);
 
-        log.info("rangeType : {}, curStart : {},  curEnd: {}, prevWeekPercent : {} , prevMonthPercent : {} ", rangeType, curStart, curEnd, prevWeekPercent, prevMonthPercent);
+//        log.info("rangeType : {}, curStart : {},  curEnd: {}, prevWeekPercent : {} , prevMonthPercent : {} ", rangeType, curStart, curEnd, prevWeekPercent, prevMonthPercent);
 
         // ✅ 최종 반환
         return new UsageCompareResponse(
