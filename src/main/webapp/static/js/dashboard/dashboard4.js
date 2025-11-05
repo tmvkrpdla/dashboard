@@ -11,7 +11,7 @@ let energyChart4 = null;
  * console.log(bill); // 약 53290원
  */
 function calcElectricBill(kWh) {
-    let bill = 0;
+   /* let bill = 0;
     let basic = 0;
 
     if (kWh <= 200) {
@@ -29,7 +29,8 @@ function calcElectricBill(kWh) {
     const subtotal = bill + basic;
     const tax = subtotal * 0.1; // 부가세 10%
 
-    return subtotal + tax;
+    return subtotal + tax;*/
+    return  kWh * 121
 }
 
 

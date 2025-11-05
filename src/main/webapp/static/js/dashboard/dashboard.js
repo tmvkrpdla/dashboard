@@ -1,6 +1,6 @@
 const API_URL = "https://smartami.kr/api/v2";
 
-let meteringCharts = {};  // { 'doughnut-chart5': ChartInstance, ... }
+let meteringCharts = {};
 
 let recentCharts = {
     left: null,
@@ -50,59 +50,67 @@ function drawTotalMeteringChart(chartData) {
         const canvasId = chartInfo.id;
         const ctx = document.getElementById(chartInfo.id).getContext('2d');
 
-        // ✅ 기존 차트가 있으면 파괴(destroy) 후 다시 그리기
+        /* // ✅ 기존 차트가 있으면 파괴(destroy) 후 다시 그리기
+         if (meteringCharts[canvasId]) {
+             meteringCharts[canvasId].destroy();
+         }
+
+         // ✅ 새로운 차트 생성 후 저장
+         meteringCharts[canvasId] = new Chart(ctx, {*/
         if (meteringCharts[canvasId]) {
-            meteringCharts[canvasId].destroy();
-        }
-
-        // ✅ 새로운 차트 생성 후 저장
-        meteringCharts[canvasId] = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                datasets: [{
-                    data: [chartInfo.value, 100 - chartInfo.value],
-                    backgroundColor: [chartInfo.color, '#2f2f2f'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                cutout: '75%',
-                rotation: -90,
-                circumference: 360,
-                responsive: true,
-                layout: {
-                    padding: {bottom: 50}
+            // 🔄 기존 차트가 있으면 데이터만 업데이트
+            meteringCharts[canvasId].data.datasets[0].data = [chartInfo.value, 100 - chartInfo.value];
+            meteringCharts[canvasId].update();
+        } else {
+            // 🆕 최초 생성 시에만 new Chart()
+            meteringCharts[canvasId] = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [chartInfo.value, 100 - chartInfo.value],
+                        backgroundColor: [chartInfo.color, '#2f2f2f'],
+                        borderWidth: 0
+                    }]
                 },
-                plugins: {
-                    legend: {display: false},
-                    tooltip: {enabled: false}
-                }
-            },
-            plugins: [{
-                id: 'centerText',
-                afterDraw(chart) {
-                    const {width, height, ctx} = chart;
+                options: {
+                    cutout: '75%',
+                    rotation: -90,
+                    circumference: 360,
+                    responsive: true,
+                    layout: {
+                        padding: {bottom: 50}
+                    },
+                    plugins: {
+                        legend: {display: false},
+                        tooltip: {enabled: false}
+                    }
+                },
+                plugins: [{
+                    id: 'centerText',
+                    afterDraw(chart) {
+                        const {width, height, ctx} = chart;
 
-                    ctx.save();
-                    ctx.font = `600 75pt Arial`;
-                    ctx.fillStyle = '#fff';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillText(chartInfo.value.toFixed(1), width / 2, height / 2 - 10);
-                    ctx.font = `26pt Arial`;
-                    ctx.fillText('%', width / 2, height / 2 + 60);
-                    ctx.restore();
+                        ctx.save();
+                        ctx.font = `600 75pt Arial`;
+                        ctx.fillStyle = '#fff';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(chartInfo.value.toFixed(1), width / 2, height / 2 - 10);
+                        ctx.font = `26pt Arial`;
+                        ctx.fillText('%', width / 2, height / 2 + 60);
+                        ctx.restore();
 
-                    ctx.save();
-                    ctx.font = '21pt Arial';
-                    ctx.fillStyle = chartInfo.color;
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillText(chartInfo.label, width / 2, height - 10);
-                    ctx.restore();
-                }
-            }]
-        });
+                        ctx.save();
+                        ctx.font = '21pt Arial';
+                        ctx.fillStyle = chartInfo.color;
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(chartInfo.label, width / 2, height - 10);
+                        ctx.restore();
+                    }
+                }]
+            });
+        }
     });
 }
 
@@ -253,43 +261,56 @@ function drawRecent14Chart(labels, lpValues, dayValues) {
     });
 
     // ✅ LP 검침률 차트
-    // ✅ 기존 차트 있으면 삭제 후 새로 생성
+    const leftCtx = document.getElementById('chart-left').getContext('2d');
     if (recentCharts.left) {
-        recentCharts.left.destroy();
+        // 🔄 기존 차트 업데이트
+        recentCharts.left.data.labels = labels;
+        recentCharts.left.data.datasets[0].data = lpValues;
+        recentCharts.left.data.datasets[0].backgroundColor = '#FFD700';
+        recentCharts.left.options = commonOptions(minLP, lpValues);
+        recentCharts.left.update();
+    } else {
+        // 🆕 최초 생성
+        recentCharts.left = new Chart(leftCtx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'LP 검침률',
+                    data: lpValues,
+                    backgroundColor: '#FFD700'
+                }]
+            },
+            options: commonOptions(minLP, lpValues),
+            plugins: [ChartDataLabels]
+        });
     }
-    recentCharts.left = new Chart(document.getElementById('chart-left'), {
-        type: 'bar',
-        data: {
-            labels,
-            datasets: [{
-                label: 'LP 검침률',
-                data: lpValues,
-                backgroundColor: '#FFD700'
-            }]
-        },
-        // options: commonOptions(minLP),
-        options: commonOptions(minLP, lpValues),
-        plugins: [ChartDataLabels]
-    });
 
-    // ✅ 일일 검침률 차트
+// ✅ 일일 검침률 차트
+    const rightCtx = document.getElementById('chart-right').getContext('2d');
     if (recentCharts.right) {
-        recentCharts.right.destroy();
+        // 🔄 기존 차트 업데이트
+        recentCharts.right.data.labels = labels;
+        recentCharts.right.data.datasets[0].data = dayValues;
+        recentCharts.right.data.datasets[0].backgroundColor = '#00A1FF';
+        recentCharts.right.options = commonOptions(minDay, dayValues);
+        recentCharts.right.update();
+    } else {
+        // 🆕 최초 생성
+        recentCharts.right = new Chart(rightCtx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: '일일 검침률',
+                    data: dayValues,
+                    backgroundColor: '#00A1FF'
+                }]
+            },
+            options: commonOptions(minDay, dayValues),
+            plugins: [ChartDataLabels]
+        });
     }
-    recentCharts.right = new Chart(document.getElementById('chart-right'), {
-        type: 'bar',
-        data: {
-            labels,
-            datasets: [{
-                label: '일일 검침률',
-                data: dayValues,
-                backgroundColor: '#00A1FF'
-            }]
-        },
-        // options: commonOptions(minDay),
-        options: commonOptions(minDay, dayValues),
-        plugins: [ChartDataLabels]
-    });
 }
 
 

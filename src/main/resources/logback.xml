@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%-5p][%d{MM-dd HH:mm:ss}][%C{1}:%L] %m %n</pattern>
+        </encoder>
+    </appender>
+
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>../logs/tomcat-dashboard.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>../logs/tomcat-dashboard-%d{yyyy-MM-dd}.log</fileNamePattern> <!-- 프로젝트별 로그 분리 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <Pattern>%d{HH:mm} %-5level %logger{1} - %msg%n</Pattern>
+            <charset>UTF-8</charset>  <!-- UTF-8 인코딩 추가 -->
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework" level="info"/>
+    <logger name="system.co.kr" level="info"/>
+
+    <!-- WebSocket 관련 로거 비활성화 -->
+    <logger name="org.springframework.web.socket" level="OFF"/>
+    <logger name="org.springframework.web.socket.messaging" level="OFF"/>
+    <logger name="org.springframework.web.socket.sockjs" level="OFF"/>
+    <logger name="org.springframework.web.socket.server" level="OFF"/>
+    <!-- WebSocket 관련 로거 비활성화 -->
+
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="logstash"/>
+    </root>
+</configuration>

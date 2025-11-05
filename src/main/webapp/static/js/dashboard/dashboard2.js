@@ -110,7 +110,7 @@ function loadHourlyUsage() {
                             line: {borderJoinStyle: 'round', borderCapStyle: 'round'}
                         }
                     },
-                    plugins: [{
+                    /*plugins: [{
                         id: 'glow',
                         afterDraw: chart => {
                             const ctx = chart.ctx;
@@ -133,7 +133,7 @@ function loadHourlyUsage() {
                             ctx.stroke();
                             ctx.restore();
                         }
-                    }]
+                    }]*/
                 });
             }
         },

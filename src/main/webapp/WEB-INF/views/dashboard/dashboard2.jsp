@@ -20,7 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 
     <link href="${pageContext.request.contextPath}/static/css/dashboard2.css" rel="stylesheet"/>
-    <script src="${pageContext.request.contextPath}/static/js/dashboard/dashboard2.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/dashboard/dashboard2.js?1.1"></script>
 
     <title>사무실 대시보드</title>
 
@@ -130,7 +130,7 @@
                         </div>
 
                         <div>
-                            <canvas id="energyChart" height="380"></canvas>
+                            <canvas id="energyChart" height="420"></canvas>
                         </div>
 
                     </div>

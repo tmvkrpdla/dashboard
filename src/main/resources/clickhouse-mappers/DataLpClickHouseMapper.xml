@@ -22,7 +22,7 @@
                                  ELSE dlh.dFapDiff / m.dValidInstrInteger
                                  END
                      ), 0) AS usage
-        FROM data_lp2_hour22 dlh
+        FROM data_lp5_hour dlh
             LEFT JOIN meter_tmp2 m
         ON dlh.mid = m.mid
         WHERE dlh.dtDttm = #{today}
@@ -40,7 +40,7 @@
         ELSE dld.dFapDiff / m.dValidInstrInteger
         END
         ), 0) AS usage
-        FROM data_lp2_day2 dld
+        FROM data_lp5_day dld
         LEFT JOIN meter_tmp2 m ON dld.mid = m.mid
         WHERE 1 = 1
         <if test="startDate != null and endDate != null">
@@ -61,7 +61,7 @@
         END
         ), 0) AS usage
         FROM
-        data_lp2_day2 dld
+        data_lp5_day dld
         LEFT JOIN meter_tmp2 m
         ON dld.mid = m.mid
         WHERE 1 = 1
