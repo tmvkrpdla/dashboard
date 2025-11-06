@@ -127,6 +127,18 @@
             <version>0.3.2</version> <!-- 안정된 최신 버전 확인 -->
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>5.3.30</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>5.3.30</version>
+        </dependency>
+
     </dependencies>
 
 

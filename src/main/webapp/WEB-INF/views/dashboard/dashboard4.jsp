@@ -21,11 +21,36 @@
 
     <link href="${pageContext.request.contextPath}/static/css/dashboard4.css" rel="stylesheet"/>
     <script src="${pageContext.request.contextPath}/static/js/dashboard/dashboard4.js?1.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 
     <title>사무실 대시보드</title>
 
     <script>
         let contextPath = "${pageContext.request.contextPath}";
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            <%--const socket = new SockJS(`${window.location.origin}${contextPath}/ws-dashboard`);--%>
+            const socket = new SockJS('/dashboard/ws-dashboard'); // context path가 /dashboard일 경우
+            console.log("socket : ", socket);
+            const stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, function () {
+                console.log("WebSocket 연결됨");
+
+                // 서버에서 refresh 신호 오면 실행
+                stompClient.subscribe('/topic/usageUpdate', function (message) {
+                    if (message.body === 'refresh') {
+                        console.log("03시 갱신 신호 수신 → 화면 새로 그림");
+                        loadUsageByRange('month');
+                        loadUsageByRange('year');
+                    }
+                });
+            });
+        });
     </script>
 
 </head>
